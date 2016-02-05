@@ -9,7 +9,7 @@ Domain checking from the terminal at your favorite supplier. Just opens your def
         <img src="https://img.shields.io/npm/l/express.svg">
     </a>    
     <a href="https://github.com/KeizerDev/domainchecker/releases/tag/v0.0.1">
-        <img src="http://img.shields.io/badge/release-v0.2.1-1eb0fc.svg">
+        <img src="http://img.shields.io/badge/release-v0.0.1-1eb0fc.svg">
     </a>
 </p>
 

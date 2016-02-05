@@ -1,6 +1,10 @@
+<p style="text-align: center;">
 [![License][License-Image]][License-Url] [![Release][Release-Image]][Release-Url]
+</p>
+<p style="text-align: center;">
 # Domainchecker
 Domain checking from the terminal at your favorite supplier. Just opens your default browser when choosed.
+</p>
 
 ```
 Usage:

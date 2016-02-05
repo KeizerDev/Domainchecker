@@ -1,9 +1,16 @@
-<p style="text-align: center;">
-[![License][License-Image]][License-Url] [![Release][Release-Image]][Release-Url]
-</p>
-<p style="text-align: center;">
-# Domainchecker
+<h1 align="center">Domainchecker</h1>
+
+<p align="center">
 Domain checking from the terminal at your favorite supplier. Just opens your default browser when choosed.
+</p>
+
+<p align="center">
+    <a href="http://opensource.org/licenses/MIT">
+        <img src="https://img.shields.io/npm/l/express.svg">
+    </a>    
+    <a href="https://github.com/KeizerDev/domainchecker/releases/tag/v0.0.1">
+        <img src="http://img.shields.io/badge/release-v0.2.1-1eb0fc.svg">
+    </a>
 </p>
 
 ```
@@ -59,8 +66,3 @@ default: namecheap.com
 #### License
 
 Domainchecker is released under the MIT license.
-
-[License-Url]: http://opensource.org/licenses/MIT
-[License-Image]: https://img.shields.io/npm/l/express.svg
-[Release-Url]: https://github.com/KeizerDev/domainchecker/releases/tag/v0.0.1
-[Release-image]: http://img.shields.io/badge/release-v0.2.1-1eb0fc.svg

@@ -1,4 +1,4 @@
-[![License][License-Image]][License-Url] [![ReportCard][ReportCard-Image]][ReportCard-Url] [![Build][Build-Status-Image]][Build-Status-Url] [![Release][Release-Image]][Release-Url]
+[![License][License-Image]][License-Url] [![Release][Release-Image]][Release-Url]
 # Domainchecker
 Domain checking from the terminal at your favorite supplier. Just opens your default browser when choosed.
 
@@ -46,7 +46,6 @@ default: namecheap.com
 
 ## Supported Providers
 
-* godaddy
 * transip
 
 #### Contributors
@@ -55,7 +54,7 @@ default: namecheap.com
 
 #### License
 
-s is released under the MIT license.
+Domainchecker is released under the MIT license.
 
 [License-Url]: http://opensource.org/licenses/MIT
 [License-Image]: https://img.shields.io/npm/l/express.svg

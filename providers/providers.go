@@ -9,6 +9,7 @@ import (
 
 	"github.com/KeizerDev/domainchecker/launcher"
 	"golang.org/x/text/language"
+	"github.com/domainr/whois"
 )
 
 const (
@@ -36,7 +37,7 @@ func AddProvider(name string, provider Provider) {
 }
 
 // Search builds a search URL and opens it in your browser.
-func Search(binary string, p string, q string, verbose bool) error {
+func Search(binary string, p string, qwhois string, verbose bool) error {
 	prov, err := ExpandProvider(p)
 	if err != nil {
 		return err
@@ -45,8 +46,7 @@ func Search(binary string, p string, q string, verbose bool) error {
 	builder := Providers[prov]
 
 	if builder != nil {
-		url := builder.BuildURI(q)
-
+		url := builder.BuildURI(doWhois(qwhois))
 		if verbose {
 			fmt.Printf("%s\n", url)
 		}
@@ -103,6 +103,15 @@ func ProviderNames() []string {
 	return names
 }
 
+func doWhois(qwhois string) string {
+	request, err := whois.NewRequest(qwhois)
+	FatalIf(err)
+	response, err := whois.DefaultClient.Fetch(request)
+	FatalIf(err)
+	fmt.Println(response)
+	return response.String()
+}
+
 // Region returns the users region code.
 // Eg. "US", "GB", etc
 func Region() string {
@@ -142,4 +151,12 @@ func locale() string {
 	locale := strings.Split(lang, ".")[0]
 
 	return locale
+}
+
+func FatalIf(err error) {
+	if err == nil {
+		return
+	}
+	fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+	os.Exit(-1)
 }

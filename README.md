@@ -15,9 +15,10 @@ Domain checking from the terminal at your favorite supplier. Just opens your def
 
 ----
 
+
 ```
 Usage:
-  s <query> [flags]
+  domainchecker <query> [flags]
 
 Flags:
   -b, --binary string     binary to launch search uri
@@ -26,6 +27,11 @@ Flags:
   -v, --verbose           display url when opening
       --version           display version
 ```
+
+## What should it do?
+You should get a list of names
+
+
 
 ## Install
 
@@ -38,16 +44,14 @@ make install
 
 ## Examples
 
-Try example.com on godaddy.com.
+Try the `.*` as domain extension to list the available domain extension for a specific name.
 ```
-domainchecker example.com
+domainchecker myepicname.*
 ```
 
-## Provider Expansion
-
-Just use your preffered supplier using the `-p` tag.
+Use the provider flag to checkout an available domain on suppliers website.
 ```
-domainchecker example.com -p namecheap
+domainchecker myepicname.nl -p godaddy
 ```
 
 **Todo:**

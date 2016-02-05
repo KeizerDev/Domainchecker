@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	providers.AddProvider("github", &Provider{})
+	providers.AddProvider("transip", &Provider{})
 }
 
 // Provider merely implements the Provider interface.

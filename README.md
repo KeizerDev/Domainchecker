@@ -13,6 +13,8 @@ Domain checking from the terminal at your favorite supplier. Just opens your def
     </a>
 </p>
 
+----
+
 ```
 Usage:
   s <query> [flags]

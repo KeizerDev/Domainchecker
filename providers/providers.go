@@ -46,7 +46,7 @@ func Search(binary string, p string, qwhois string, verbose bool) error {
 	builder := Providers[prov]
 
 	if builder != nil {
-		url := builder.BuildURI(doWhois(qwhois))
+		url := builder.BuildURI(doWhois(qwhois, verbose))
 		if verbose {
 			fmt.Printf("%s\n", url)
 		}

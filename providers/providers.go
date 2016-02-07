@@ -103,13 +103,23 @@ func ProviderNames() []string {
 	return names
 }
 
-func doWhois(qwhois string) string {
+func doWhois(qwhois string, verbose bool) string {
 	request, err := whois.NewRequest(qwhois)
 	FatalIf(err)
+
 	response, err := whois.DefaultClient.Fetch(request)
 	FatalIf(err)
-	fmt.Println(response)
-	return response.String()
+
+	if verbose {
+		fmt.Printf("%s\n", response)
+	}
+
+	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)`)
+	if v := response.String(); r.MatchString(v) {
+		return "beschikbaar"
+	} else {
+		return "NIET beschikbaar"
+	}
 }
 
 // Region returns the users region code.

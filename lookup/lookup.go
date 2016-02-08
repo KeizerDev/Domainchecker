@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/domainr/whois"
+	"github.com/gosuri/uilive"
+	"github.com/gosuri/uitable"
 	"golang.org/x/text/language"
 )
 
@@ -14,6 +16,15 @@ const (
 	defaultLanguage = "en"
 	defaultRegion   = "US"
 )
+
+type domaincheck struct {
+	Domain, Available string
+	Id                int
+}
+
+var domainExtensions = []string{"com", "net", "org", "nl", "de", "io"}
+
+var domainscheck = []domaincheck{}
 
 // Provider interface provides a way to build the URI
 // for each provider.
@@ -33,6 +44,24 @@ func init() {
 
 // Search builds a search URL and opens it in your browser.
 func DoLookUp(p string, qwhois string, verbose bool) error {
+	writer := uilive.New()
+	writer.Start()
+
+	table := uitable.New()
+	table.MaxColWidth = 50
+	if strings.HasSuffix(qwhois, ".*") {
+		qwhois = strings.TrimSuffix(qwhois, ".*")
+
+		for i, domain := range domainExtensions {
+			domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", qwhois, domain), "progress", i})
+			table.AddRow("[☓]", fmt.Sprintf("%s.%s", qwhois, domain))
+		}
+
+		// lookup.doWhois(verbose, qwhois) // Add array support
+	}
+
+	fmt.Fprintln(writer, table)
+	writer.Stop() // flush and stop rendering
 
 	fmt.Printf(doWhois(qwhois, verbose))
 	if verbose {

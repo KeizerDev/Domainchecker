@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/KeizerDev/domainchecker/lookup"
 	"github.com/KeizerDev/domainchecker/providers"
 	"github.com/spf13/cobra"
 )
@@ -29,8 +30,8 @@ var keypem string
 // SearchCmd is the main command for Cobra.
 var SearchCmd = &cobra.Command{
 	Use:   "domainchecker <query>",
-	Short: "Web search from the terminal",
-	Long:  `Web search from the terminal.`,
+	Short: "Check domain availability from your cli",
+	Long:  `Check domain availability from your cli and pass it to a domain provider.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := performCommand(cmd, args)
 		if err != nil {
@@ -50,7 +51,7 @@ func prepareFlags() {
 	SearchCmd.PersistentFlags().BoolVarP(
 		&verbose, "verbose", "v", false, "display url when opening")
 	SearchCmd.PersistentFlags().StringVarP(
-		&provider, "provider", "p", "godaddy", "set buy provider")
+		&provider, "provider", "p", "transip", "set buy provider")
 	SearchCmd.PersistentFlags().BoolVarP(
 		&listProviders, "list-providers", "l", false, "list supported providers")
 	SearchCmd.PersistentFlags().StringVarP(
@@ -93,7 +94,8 @@ func performCommand(cmd *cobra.Command, args []string) error {
 	}
 
 	if query != "" {
-		err := providers.Search(binary, provider, query, verbose)
+		// err := providers.Search(binary, provider, query, verbose)
+		err := lookup.DoLookUp(provider, query, verbose)
 		if err != nil {
 			return err
 		}

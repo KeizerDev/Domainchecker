@@ -9,7 +9,6 @@ import (
 
 	"github.com/KeizerDev/domainchecker/launcher"
 	"golang.org/x/text/language"
-	"github.com/domainr/whois"
 )
 
 const (
@@ -37,7 +36,7 @@ func AddProvider(name string, provider Provider) {
 }
 
 // Search builds a search URL and opens it in your browser.
-func Search(binary string, p string, qwhois string, verbose bool) error {
+func Search(binary string, p string, q string, verbose bool) error {
 	prov, err := ExpandProvider(p)
 	if err != nil {
 		return err
@@ -46,7 +45,7 @@ func Search(binary string, p string, qwhois string, verbose bool) error {
 	builder := Providers[prov]
 
 	if builder != nil {
-		url := builder.BuildURI(doWhois(qwhois, verbose))
+		url := builder.BuildURI(q)
 		if verbose {
 			fmt.Printf("%s\n", url)
 		}
@@ -101,25 +100,6 @@ func ProviderNames() []string {
 
 	sort.Strings(names)
 	return names
-}
-
-func doWhois(qwhois string, verbose bool) string {
-	request, err := whois.NewRequest(qwhois)
-	FatalIf(err)
-
-	response, err := whois.DefaultClient.Fetch(request)
-	FatalIf(err)
-
-	if verbose {
-		fmt.Printf("%s\n", response)
-	}
-
-	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)`)
-	if v := response.String(); r.MatchString(v) {
-		return "beschikbaar"
-	} else {
-		return "NIET beschikbaar"
-	}
 }
 
 // Region returns the users region code.

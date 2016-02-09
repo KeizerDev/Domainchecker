@@ -9,6 +9,7 @@ import (
 	"github.com/domainr/whois"
 	"github.com/gosuri/uilive"
 	"github.com/gosuri/uitable"
+	"github.com/fatih/color"
 	"golang.org/x/text/language"
 )
 
@@ -47,6 +48,8 @@ func DoLookUp(p string, qwhois string, verbose bool) error {
 	writer := uilive.New()
 	writer.Start()
 
+	red := color.New(color.FgRed, color.Bold).SprintFunc()
+
 	table := uitable.New()
 	table.MaxColWidth = 50
 	if strings.HasSuffix(qwhois, ".*") {
@@ -54,7 +57,7 @@ func DoLookUp(p string, qwhois string, verbose bool) error {
 
 		for i, domain := range domainExtensions {
 			domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", qwhois, domain), "progress", i})
-			table.AddRow("[☓]", fmt.Sprintf("%s.%s", qwhois, domain))
+			table.AddRow(fmt.Sprintf("[%s]", red("☓")), fmt.Sprintf("%s.%s", qwhois, domain))
 		}
 
 		// lookup.doWhois(verbose, qwhois) // Add array support
@@ -86,7 +89,7 @@ func doWhois(qwhois string, verbose bool) string {
 	if v := response.String(); r.MatchString(v) {
 		return "beschikbaar\n"
 	} else {
-		return "NIET beschikbaar\n"
+		return "☓\n"
 	}
 }
 

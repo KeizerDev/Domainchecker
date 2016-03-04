@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/domainr/whois"
+	"github.com/fatih/color"
 	"github.com/gosuri/uilive"
 	"github.com/gosuri/uitable"
-	"github.com/fatih/color"
 	"golang.org/x/text/language"
 )
 
@@ -19,8 +19,8 @@ const (
 )
 
 type domaincheck struct {
-	Domain, Available string
-	Id                int
+	Domain    string
+	Available int
 }
 
 var domainExtensions = []string{"com", "net", "org", "nl", "de", "io"}
@@ -45,36 +45,57 @@ func init() {
 
 // Search builds a search URL and opens it in your browser.
 func DoLookUp(p string, qwhois string, verbose bool) error {
+
+	if strings.HasSuffix(qwhois, ".*") {
+		qwhois = strings.TrimSuffix(qwhois, ".*")
+
+		for _, domain := range domainExtensions {
+			domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", qwhois, domain), 0})
+		}
+	}
+
+	createTableArray(doWhoisWithArray(domainscheck))
+
+	if verbose {
+		fmt.Printf("%s\n", qwhois)
+	}
+	return nil
+}
+
+func createTableArray(domainscheck []domaincheck) {
 	writer := uilive.New()
 	writer.Start()
 
 	red := color.New(color.FgRed, color.Bold).SprintFunc()
+	green := color.New(color.FgGreen, color.Bold).SprintFunc()
 
 	table := uitable.New()
 	table.MaxColWidth = 50
-	if strings.HasSuffix(qwhois, ".*") {
-		qwhois = strings.TrimSuffix(qwhois, ".*")
 
-		for i, domain := range domainExtensions {
-			domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", qwhois, domain), "progress", i})
-			table.AddRow(fmt.Sprintf("[%s]", red("☓")), fmt.Sprintf("%s.%s", qwhois, domain))
+	for _, domain := range domainscheck {
+		indicator := ""
+		if domain.Available == 1 {
+			indicator = fmt.Sprintf("[%s]", green("✓"))
+		} else if domain.Available == 2 {
+			indicator = fmt.Sprintf("[%s]", red("☓"))
 		}
-
-		// lookup.doWhois(verbose, qwhois) // Add array support
+		table.AddRow(indicator, domain.Domain)
 	}
 
 	fmt.Fprintln(writer, table)
 	writer.Stop() // flush and stop rendering
-
-	fmt.Printf(doWhois(qwhois, verbose))
-	if verbose {
-		fmt.Printf("%s\n", qwhois)
-	}
-
-	return nil
 }
 
-func doWhois(qwhois string, verbose bool) string {
+func doWhoisWithArray(qwhois []domaincheck) []domaincheck {
+	domainscheck = qwhois
+	for i, domain := range qwhois {
+		// fmt.Printf(domain.Domain)
+		domainscheck[i] = domaincheck{domain.Domain, doWhois(domain.Domain, false)}
+	}
+	return domainscheck
+}
+
+func doWhois(qwhois string, verbose bool) int {
 	request, err := whois.NewRequest(qwhois)
 	FatalIf(err)
 
@@ -87,9 +108,9 @@ func doWhois(qwhois string, verbose bool) string {
 
 	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)`)
 	if v := response.String(); r.MatchString(v) {
-		return "beschikbaar\n"
+		return 1
 	} else {
-		return "☓\n"
+		return 2
 	}
 }
 

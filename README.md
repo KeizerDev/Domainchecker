@@ -1,7 +1,7 @@
 <h1 align="center">Domainchecker</h1>
 
 <p align="center">
-Domain checking from the terminal at your favorite supplier. Just opens your default browser when choosed.
+Check domain availability from your terminal and open your favorite supplier with the choosed domain. Just from your terminal.
 </p>
 
 <p align="center">
@@ -22,14 +22,14 @@ Usage:
 
 Flags:
   -l, --list-providers    list supported providers
-  -p, --provider string   set search provider (default "google")
+  -p, --provider string   set doamin supply provider (default "godaddy") (TODO)
   -v, --verbose           display url when opening
       --version           display version
 ```
 
 ## What should it do?
 It should check which domain is available and which not. 
-When the domain is available it would be ideal to pass it to a domain supplier like [godaddy](https://godaddy.com/) (this is wip on).
+When the domain is available it would be ideal to pass it to a domain supplier like [godaddy](https://godaddy.com/) (this is WIP now).
 
 
 ## Install

@@ -53,7 +53,7 @@ Or just specify the name like so.
 domainchecker myepicname.nl
 ```
 
-**Todo !THIS STILL DOESN'T WORK!:**
+**Todo !THIS STILL DOESN'T WORK!:**   
 Add a provider flag to check the particular domain on a supplier site.
 ```
 domainchecker myepicname.nl -p godaddy

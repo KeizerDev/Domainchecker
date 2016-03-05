@@ -31,7 +31,7 @@ var keypem string
 var SearchCmd = &cobra.Command{
 	Use:   "domainchecker <query>",
 	Short: "Check domain availability from your cli",
-	Long:  `Check domain availability from your cli and pass it to a domain provider.`,
+	Long:  `Check domain availability from your cli and pass it to a domain provider. Made with ❤ by KeizerDev`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := performCommand(cmd, args)
 		if err != nil {

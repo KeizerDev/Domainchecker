@@ -61,7 +61,10 @@ func QueryHandler(p string, domain string, verbose bool) error {
 	// if verbose {
 	// 	fmt.Printf("%s\n", domain)
 	// }
-	createTableArray(doWhoisWithArray(domainscheck))
+
+	// This should be drawn first but I can't find a way to
+	// createTable(domainscheck)
+	createTable(doWhoisWithArray(domainscheck))
 
 	return nil
 }
@@ -86,10 +89,11 @@ func multipleDomains(domain string) []domaincheck {
 }
 
 
-func createTableArray(domainscheck []domaincheck) {
+func createTable(domainscheck []domaincheck) {
 	writer := uilive.New()
 	writer.Start()
 
+	white := color.New(color.FgWhite, color.Bold).SprintFunc()
 	red := color.New(color.FgRed, color.Bold).SprintFunc()
 	green := color.New(color.FgGreen, color.Bold).SprintFunc()
 
@@ -98,7 +102,9 @@ func createTableArray(domainscheck []domaincheck) {
 
 	for _, domain := range domainscheck {
 		indicator := ""
-		if domain.Available == 1 {
+		if domain.Available == 0 {
+			indicator = fmt.Sprintf("[%s]", white("●"))
+		} else if domain.Available == 1 {
 			indicator = fmt.Sprintf("[%s]", green("✓"))
 		} else if domain.Available == 2 {
 			indicator = fmt.Sprintf("[%s]", red("☓"))

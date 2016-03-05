@@ -18,6 +18,11 @@ const (
 	defaultRegion   = "US"
 )
 
+
+// Available:
+// 0 = in progress
+// 1 = available
+// 2 = not available
 type domaincheck struct {
 	Domain    string
 	Available int
@@ -44,23 +49,42 @@ func init() {
 // }
 
 // Search builds a search URL and opens it in your browser.
-func DoLookUp(p string, qwhois string, verbose bool) error {
+func QueryHandler(p string, domain string, verbose bool) error {
+	domainscheck = []domaincheck{}
 
-	if strings.HasSuffix(qwhois, ".*") {
-		qwhois = strings.TrimSuffix(qwhois, ".*")
-
-		for _, domain := range domainExtensions {
-			domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", qwhois, domain), 0})
-		}
+	if strings.HasSuffix(domain, ".*") {
+		domainscheck = multipleDomains(domain)
+	} else {
+		domainscheck = singleDomain(domain)
 	}
 
+	// if verbose {
+	// 	fmt.Printf("%s\n", domain)
+	// }
 	createTableArray(doWhoisWithArray(domainscheck))
 
-	if verbose {
-		fmt.Printf("%s\n", qwhois)
-	}
 	return nil
 }
+
+func singleDomain(domain string) []domaincheck {
+	domainscheck = []domaincheck{}
+	domainscheck = append(domainscheck, domaincheck{domain, 0})
+
+	return domainscheck
+}
+
+func multipleDomains(domain string) []domaincheck {
+	domainscheck = []domaincheck{}
+
+	domain = strings.TrimSuffix(domain, ".*")
+
+	for _, extension := range domainExtensions {
+		domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", domain, extension), 0})
+	}
+
+	return domainscheck
+}
+
 
 func createTableArray(domainscheck []domaincheck) {
 	writer := uilive.New()

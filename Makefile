@@ -1,4 +1,4 @@
-APPNAME = s
+APPNAME = domainchecker
 
 all:
 	go build .

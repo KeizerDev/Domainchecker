@@ -58,27 +58,20 @@ func QueryHandler(p string, domain string, verbose bool) error {
 		domainscheck = singleDomain(domain)
 	}
 
-	// if verbose {
-	// 	fmt.Printf("%s\n", domain)
-	// }
-
-	// This should be drawn first but I can't find a way to
+	// This should be drawn first but I can't find a way to clear the table and redraw it with new information.
 	// createTable(domainscheck)
-	createTable(doWhoisWithArray(domainscheck))
+	createTable(WhoisArr(domainscheck))
 
 	return nil
 }
 
 func singleDomain(domain string) []domaincheck {
-	domainscheck = []domaincheck{}
 	domainscheck = append(domainscheck, domaincheck{domain, 0})
 
 	return domainscheck
 }
 
 func multipleDomains(domain string) []domaincheck {
-	domainscheck = []domaincheck{}
-
 	domain = strings.TrimSuffix(domain, ".*")
 
 	for _, extension := range domainExtensions {
@@ -103,11 +96,11 @@ func createTable(domainscheck []domaincheck) {
 	for _, domain := range domainscheck {
 		indicator := ""
 		if domain.Available == 0 {
-			indicator = fmt.Sprintf("[%s]", white("●"))
+			indicator = fmt.Sprintf("[%s]", white("●")) // Find better load icon
 		} else if domain.Available == 1 {
 			indicator = fmt.Sprintf("[%s]", green("✓"))
 		} else if domain.Available == 2 {
-			indicator = fmt.Sprintf("[%s]", red("☓"))
+			indicator = fmt.Sprintf("[%s]", red("×"))
 		}
 		table.AddRow(indicator, domain.Domain)
 	}
@@ -116,10 +109,9 @@ func createTable(domainscheck []domaincheck) {
 	writer.Stop() // flush and stop rendering
 }
 
-func doWhoisWithArray(qwhois []domaincheck) []domaincheck {
-	domainscheck = qwhois
-	for i, domain := range qwhois {
-		// fmt.Printf(domain.Domain)
+func WhoisArr(domains []domaincheck) []domaincheck {
+	domainscheck = domains
+	for i, domain := range domains {
 		domainscheck[i] = domaincheck{domain.Domain, doWhois(domain.Domain, false)}
 	}
 	return domainscheck
@@ -136,6 +128,10 @@ func doWhois(qwhois string, verbose bool) int {
 		fmt.Printf("%s\n", response)
 	}
 
+	// TODO: Split this into separate files for each extension
+	// For example
+	// dotcom.provider:
+	// 	"No match"
 	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)`)
 	if v := response.String(); r.MatchString(v) {
 		return 1

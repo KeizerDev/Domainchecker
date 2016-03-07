@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/KeizerDev/domainchecker/domainproviders"
 	"github.com/KeizerDev/domainchecker/lookup"
 	"github.com/KeizerDev/domainchecker/providers"
 	"github.com/spf13/cobra"
@@ -22,6 +23,7 @@ var displayVersion bool
 var verbose bool
 var provider string
 var listProviders bool
+var domainProviders bool
 var binary string
 var port int
 var certpem string
@@ -54,6 +56,8 @@ func prepareFlags() {
 		&provider, "provider", "p", "godaddy", "set buy provider")
 	SearchCmd.PersistentFlags().BoolVarP(
 		&listProviders, "list-providers", "l", false, "list supported providers")
+	SearchCmd.PersistentFlags().BoolVarP(
+		&domainProviders, "list-extensions", "e", false, "list supported extensions")
 	SearchCmd.PersistentFlags().StringVarP(
 		&certpem, "cert", "c", "", "location of cert.pem for TLS")
 	SearchCmd.PersistentFlags().StringVarP(
@@ -69,6 +73,11 @@ func performCommand(cmd *cobra.Command, args []string) error {
 
 	if listProviders {
 		fmt.Printf(providers.DisplayProviders())
+		return nil
+	}
+
+	if domainProviders {
+		fmt.Printf(domainproviders.DisplayProviders())
 		return nil
 	}
 
@@ -93,7 +102,7 @@ func performCommand(cmd *cobra.Command, args []string) error {
 
 	if query != "" {
 		err := lookup.QueryHandler(provider, query, verbose)
-		// err := providers.Search(binary, provider, query, verbose)
+		// err := domainproviders.Search(binary, provider, query, verbose)
 		if err != nil {
 			return err
 		}

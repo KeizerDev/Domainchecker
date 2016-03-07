@@ -3,6 +3,13 @@ package main
 import (
 	"fmt"
 	"os"
+	// Load necessary domainprovider.
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotcom"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotde"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotio"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotnet"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotnl"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotorg"
 
 	// Load necessary providers.
 	_ "github.com/KeizerDev/domainchecker/providers/transip"

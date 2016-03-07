@@ -6,16 +6,11 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/KeizerDev/domainchecker/domainproviders"
 	"github.com/domainr/whois"
 	"github.com/fatih/color"
 	"github.com/gosuri/uilive"
 	"github.com/gosuri/uitable"
-	"golang.org/x/text/language"
-)
-
-const (
-	defaultLanguage = "en"
-	defaultRegion   = "US"
 )
 
 // Available:
@@ -27,25 +22,10 @@ type domaincheck struct {
 	Available int
 }
 
-var domainExtensions = []string{"com", "net", "org", "nl", "de", "io"}
-
 var domainscheck = []domaincheck{}
 
-// Provider interface provides a way to build the URI
-// for each provider.
-
-// Providers tracks loaded providers.
-// var Providers map[string]Provider
-
 func init() {
-	// 	Providers = make(map[string]Provider)
 }
-
-// AddProvider should be called within your provider's init() func.
-// This will register the provider so it can be used.
-// func AddProvider(name string, provider Provider) {
-// 	Providers[name] = provider
-// }
 
 // Search builds a search URL and opens it in your browser.
 func QueryHandler(p string, domain string, verbose bool) error {
@@ -73,8 +53,8 @@ func singleDomain(domain string) []domaincheck {
 func multipleDomains(domain string) []domaincheck {
 	domain = strings.TrimSuffix(domain, ".*")
 
-	for _, extension := range domainExtensions {
-		domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", domain, extension), 0})
+	for _, domainext := range domainproviders.DomainProviders {
+		domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", domain, domainext.GetExtension()), 0})
 	}
 
 	return domainscheck
@@ -108,16 +88,22 @@ func createTable(domainscheck []domaincheck) {
 	writer.Stop() // flush and stop rendering
 }
 
-func getIndicator() {
-
-}
-
 func WhoisArr(domains []domaincheck) []domaincheck {
 	domainscheck = domains
 	for i, domain := range domains {
 		domainscheck[i] = domaincheck{domain.Domain, doWhois(domain.Domain, false)}
 	}
 	return domainscheck
+}
+
+func RegexBuilder() string {
+	regex := ``
+	for _, domainext := range domainproviders.DomainProviders {
+		regex = regex + domainext.GetRegex() + `|`
+	}
+
+	// Return and just add some more bonus regex :)
+	return regex + `(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)`
 }
 
 func doWhois(qwhois string, verbose bool) int {
@@ -131,57 +117,12 @@ func doWhois(qwhois string, verbose bool) int {
 		fmt.Printf("%s\n", response)
 	}
 
-	// TODO: Split this into separate files for each extension
-	// For example
-	// dotcom.provider:
-	// 	"No match"
-	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)|(is available for purchase)`)
+	r := regexp.MustCompile(RegexBuilder())
 	if v := response.String(); r.MatchString(v) {
 		return 1
 	} else {
 		return 2
 	}
-}
-
-// Region returns the users region code.
-// Eg. "US", "GB", etc
-func Region() string {
-	l := locale()
-
-	tag, err := language.Parse(l)
-	if err != nil {
-		return defaultRegion
-	}
-
-	region, _ := tag.Region()
-
-	return region.String()
-}
-
-// Language returns the users language code.
-// Eg. "en", "es", etc
-func Language() string {
-	l := locale()
-
-	tag, err := language.Parse(l)
-	if err != nil {
-		return defaultLanguage
-	}
-
-	base, _ := tag.Base()
-
-	return base.String()
-}
-
-func locale() string {
-	lang := os.Getenv("LANG")
-	if lang == "" {
-		return ""
-	}
-
-	locale := strings.Split(lang, ".")[0]
-
-	return locale
 }
 
 func FatalIf(err error) {

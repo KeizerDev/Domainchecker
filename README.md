@@ -15,14 +15,16 @@ Check domain availability from your terminal and open your favorite supplier wit
 
 ----
 
+<img align="center" src="https://raw.githubusercontent.com/KeizerDev/domainchecker/master/demo.gif">
 
 ```
 Usage:
   domainchecker <query> [flags]
 
 Flags:
+  -e, --list-extensions   list supported extensions
   -l, --list-providers    list supported providers
-  -p, --provider string   set doamin supply provider (default "godaddy") (TODO)
+  -p, --provider string   set buy provider (default "godaddy")
   -v, --verbose           display url when opening
       --version           display version
 ```
@@ -43,31 +45,40 @@ make install
 
 ## Examples
 
-To get a list of a specific domain just add an `.*` to the and of your name. This will list some domains who are available. 
+To get an overview of the domains which are available and which not. Hit your preffered name with `.*`. For example: 
 ```
-domainchecker myepicname.*
+$ domainchecker myawesomestartup.*
 ```
 
-Or just specify the name like so.
+
+Or just specify the name like so:
 ```
-domainchecker myepicname.nl
+$ domainchecker myawesomestartup.nl
+```
+
+
+To get a list of all the domain extensions hit.
+```
+$ domainchecker -e
 ```
 
 **Todo !THIS STILL DOESN'T WORK!:**   
 Add a provider flag to check the particular domain on a supplier site.
 ```
-domainchecker myepicname.nl -p godaddy
+$ domainchecker myepicname.nl -p godaddy
 ```
 
 To get a list of the suppliers just run.
 ```
-domainchecker -l
+$ domainchecker -l
 ```
-
 
 ## Supported Providers
 
 * **TODO**
+
+## Contributing
+To add more domain extensions, build a new feature or just fix a simple typo just create a PR. I'm very happy with every contribution out there, no matter how small it is!  
 
 #### Contributors
 

@@ -51,7 +51,7 @@ func prepareFlags() {
 	SearchCmd.PersistentFlags().BoolVarP(
 		&verbose, "verbose", "v", false, "display url when opening")
 	SearchCmd.PersistentFlags().StringVarP(
-		&provider, "provider", "p", "transip", "set buy provider")
+		&provider, "provider", "p", "godaddy", "set buy provider")
 	SearchCmd.PersistentFlags().BoolVarP(
 		&listProviders, "list-providers", "l", false, "list supported providers")
 	SearchCmd.PersistentFlags().StringVarP(

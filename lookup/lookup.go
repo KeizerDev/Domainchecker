@@ -93,11 +93,12 @@ func createTable(domainscheck []domaincheck) {
 
 	for _, domain := range domainscheck {
 		indicator := ""
-		if domain.Available == 0 {
+		switch domain.Available {
+		case 0:
 			indicator = fmt.Sprintf("[%s]", white("●")) // Find better load icon
-		} else if domain.Available == 1 {
+		case 1:
 			indicator = fmt.Sprintf("[%s]", green("✓"))
-		} else if domain.Available == 2 {
+		case 2:
 			indicator = fmt.Sprintf("[%s]", red("×"))
 		}
 		table.AddRow(indicator, domain.Domain)
@@ -105,6 +106,10 @@ func createTable(domainscheck []domaincheck) {
 
 	fmt.Fprintln(writer, table)
 	writer.Stop() // flush and stop rendering
+}
+
+func getIndicator() {
+
 }
 
 func WhoisArr(domains []domaincheck) []domaincheck {

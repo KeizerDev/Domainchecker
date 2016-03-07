@@ -15,7 +15,7 @@ Check domain availability from your terminal and open your favorite supplier wit
 
 ----
 <p align="center">
-  <img width="500" align="center" src="https://github.com/KeizerDev/domainchecker/blob/master/demo.gif">
+  <img width="650" align="center" src="https://github.com/KeizerDev/domainchecker/blob/master/demo.gif">
 </p>
 
 ```

@@ -31,7 +31,7 @@ var keypem string
 var SearchCmd = &cobra.Command{
 	Use:   "domainchecker <query>",
 	Short: "Check domain availability from your cli",
-	Long:  `Check domain availability from your cli and pass it to a domain provider.`,
+	Long:  `Check domain availability from your cli and pass it to a domain provider. Made with ❤ by KeizerDev`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := performCommand(cmd, args)
 		if err != nil {
@@ -54,8 +54,6 @@ func prepareFlags() {
 		&provider, "provider", "p", "transip", "set buy provider")
 	SearchCmd.PersistentFlags().BoolVarP(
 		&listProviders, "list-providers", "l", false, "list supported providers")
-	SearchCmd.PersistentFlags().StringVarP(
-		&binary, "binary", "b", "", "binary to launch search uri")
 	SearchCmd.PersistentFlags().StringVarP(
 		&certpem, "cert", "c", "", "location of cert.pem for TLS")
 	SearchCmd.PersistentFlags().StringVarP(
@@ -94,8 +92,8 @@ func performCommand(cmd *cobra.Command, args []string) error {
 	}
 
 	if query != "" {
+		err := lookup.QueryHandler(provider, query, verbose)
 		// err := providers.Search(binary, provider, query, verbose)
-		err := lookup.DoLookUp(provider, query, verbose)
 		if err != nil {
 			return err
 		}

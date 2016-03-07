@@ -1,7 +1,7 @@
 <h1 align="center">Domainchecker</h1>
 
 <p align="center">
-Domain checking from the terminal at your favorite supplier. Just opens your default browser when choosed.
+Check domain availability from your terminal and open your favorite supplier with the choosed domain. Just from your terminal.
 </p>
 
 <p align="center">
@@ -21,16 +21,15 @@ Usage:
   domainchecker <query> [flags]
 
 Flags:
-  -b, --binary string     binary to launch search uri
   -l, --list-providers    list supported providers
-  -p, --provider string   set search provider (default "google")
+  -p, --provider string   set doamin supply provider (default "godaddy") (TODO)
   -v, --verbose           display url when opening
       --version           display version
 ```
 
 ## What should it do?
-You should get a list of names
-
+It should check which domain is available and which not. 
+When the domain is available it would be ideal to pass it to a domain supplier like [godaddy](https://godaddy.com/) (this is WIP now).
 
 
 ## Install
@@ -44,26 +43,31 @@ make install
 
 ## Examples
 
-Try the `.*` as domain extension to list the available domain extension for a specific name.
+To get a list of a specific domain just add an `.*` to the and of your name. This will list some domains who are available. 
 ```
 domainchecker myepicname.*
 ```
 
-Use the provider flag to checkout an available domain on suppliers website.
+Or just specify the name like so.
+```
+domainchecker myepicname.nl
+```
+
+**Todo !THIS STILL DOESN'T WORK!:**   
+Add a provider flag to check the particular domain on a supplier site.
 ```
 domainchecker myepicname.nl -p godaddy
 ```
 
-**Todo:**
+To get a list of the suppliers just run.
+```
+domainchecker -l
+```
 
-You can also change the default provider in your domainchecker config file like this: 
-```
-default: namecheap.com
-```
 
 ## Supported Providers
 
-* transip
+* **TODO**
 
 #### Contributors
 

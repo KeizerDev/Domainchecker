@@ -18,6 +18,10 @@ const (
 	defaultRegion   = "US"
 )
 
+// Available:
+// 0 = in progress
+// 1 = available
+// 2 = not available
 type domaincheck struct {
 	Domain    string
 	Available int
@@ -44,28 +48,43 @@ func init() {
 // }
 
 // Search builds a search URL and opens it in your browser.
-func DoLookUp(p string, qwhois string, verbose bool) error {
+func QueryHandler(p string, domain string, verbose bool) error {
+	domainscheck = []domaincheck{}
 
-	if strings.HasSuffix(qwhois, ".*") {
-		qwhois = strings.TrimSuffix(qwhois, ".*")
-
-		for _, domain := range domainExtensions {
-			domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", qwhois, domain), 0})
-		}
+	if strings.HasSuffix(domain, ".*") {
+		domainscheck = multipleDomains(domain)
+	} else {
+		domainscheck = singleDomain(domain)
 	}
 
-	createTableArray(doWhoisWithArray(domainscheck))
+	// This should be drawn first but I can't find a way to clear the table and redraw it with new information.
+	// createTable(domainscheck)
+	createTable(WhoisArr(domainscheck))
 
-	if verbose {
-		fmt.Printf("%s\n", qwhois)
-	}
 	return nil
 }
 
-func createTableArray(domainscheck []domaincheck) {
+func singleDomain(domain string) []domaincheck {
+	domainscheck = append(domainscheck, domaincheck{domain, 0})
+
+	return domainscheck
+}
+
+func multipleDomains(domain string) []domaincheck {
+	domain = strings.TrimSuffix(domain, ".*")
+
+	for _, extension := range domainExtensions {
+		domainscheck = append(domainscheck, domaincheck{fmt.Sprintf("%s.%s", domain, extension), 0})
+	}
+
+	return domainscheck
+}
+
+func createTable(domainscheck []domaincheck) {
 	writer := uilive.New()
 	writer.Start()
 
+	white := color.New(color.FgWhite, color.Bold).SprintFunc()
 	red := color.New(color.FgRed, color.Bold).SprintFunc()
 	green := color.New(color.FgGreen, color.Bold).SprintFunc()
 
@@ -74,10 +93,12 @@ func createTableArray(domainscheck []domaincheck) {
 
 	for _, domain := range domainscheck {
 		indicator := ""
-		if domain.Available == 1 {
+		if domain.Available == 0 {
+			indicator = fmt.Sprintf("[%s]", white("●")) // Find better load icon
+		} else if domain.Available == 1 {
 			indicator = fmt.Sprintf("[%s]", green("✓"))
 		} else if domain.Available == 2 {
-			indicator = fmt.Sprintf("[%s]", red("☓"))
+			indicator = fmt.Sprintf("[%s]", red("×"))
 		}
 		table.AddRow(indicator, domain.Domain)
 	}
@@ -86,10 +107,9 @@ func createTableArray(domainscheck []domaincheck) {
 	writer.Stop() // flush and stop rendering
 }
 
-func doWhoisWithArray(qwhois []domaincheck) []domaincheck {
-	domainscheck = qwhois
-	for i, domain := range qwhois {
-		// fmt.Printf(domain.Domain)
+func WhoisArr(domains []domaincheck) []domaincheck {
+	domainscheck = domains
+	for i, domain := range domains {
 		domainscheck[i] = domaincheck{domain.Domain, doWhois(domain.Domain, false)}
 	}
 	return domainscheck
@@ -106,7 +126,11 @@ func doWhois(qwhois string, verbose bool) int {
 		fmt.Printf("%s\n", response)
 	}
 
-	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)`)
+	// TODO: Split this into separate files for each extension
+	// For example
+	// dotcom.provider:
+	// 	"No match"
+	r := regexp.MustCompile(`(No match)|(^NOT FOUND)|(^Not fo|AVAILABLE)|(^No Data Fou|has not been regi|No entri)|(Status: free)|(.nl is free)|(is available for purchase)`)
 	if v := response.String(); r.MatchString(v) {
 		return 1
 	} else {

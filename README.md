@@ -63,7 +63,7 @@ To get a list of all the domain extensions hit.
 $ domainchecker -e
 ```
 
-**Todo !THIS STILL DOESN'T WORK!:**   
+**TODO:**   
 Add a provider flag to check the particular domain on a supplier site.
 ```
 $ domainchecker myepicname.nl -p godaddy
@@ -73,10 +73,6 @@ To get a list of the suppliers just run.
 ```
 $ domainchecker -l
 ```
-
-## Supported Providers
-
-* **TODO**
 
 ## Contributing
 To add more domain extensions, build a new feature or just fix a simple typo just create a PR. I'm very happy with every contribution out there, no matter how small it is!  

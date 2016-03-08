@@ -37,9 +37,14 @@ func QueryHandler(p string, domain string, verbose bool) error {
 		domainscheck = singleDomain(domain)
 	}
 
+	writer := uilive.New()
+	writer.Start()
 	// This should be drawn first but I can't find a way to clear the table and redraw it with new information.
-	// createTable(domainscheck)
-	createTable(WhoisArr(domainscheck))
+
+	createTable(writer, domainscheck)
+	createTable(writer, WhoisArr(domainscheck))
+
+	writer.Stop() // flush and stop rendering
 
 	return nil
 }
@@ -60,9 +65,8 @@ func multipleDomains(domain string) []domaincheck {
 	return domainscheck
 }
 
-func createTable(domainscheck []domaincheck) {
-	writer := uilive.New()
-	writer.Start()
+func createTable(writer *uilive.Writer, domainscheck []domaincheck) {
+
 
 	white := color.New(color.FgWhite, color.Bold).SprintFunc()
 	red := color.New(color.FgRed, color.Bold).SprintFunc()
@@ -85,7 +89,6 @@ func createTable(domainscheck []domaincheck) {
 	}
 
 	fmt.Fprintln(writer, table)
-	writer.Stop() // flush and stop rendering
 }
 
 func WhoisArr(domains []domaincheck) []domaincheck {

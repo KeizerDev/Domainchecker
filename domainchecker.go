@@ -6,6 +6,7 @@ import (
 	// Load necessary domainprovider.
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotcom"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotde"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/doteu"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotio"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotnet"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotnl"

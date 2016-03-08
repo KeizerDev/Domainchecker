@@ -4,14 +4,16 @@ import (
 	"fmt"
 	"os"
 	// Load necessary domainprovider.
-	_ "github.com/KeizerDev/domainchecker/domainproviders/dotcom"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotbe"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotcom"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotde"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/doteu"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotio"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotlol"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotnet"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotnl"
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotorg"
+	_ "github.com/KeizerDev/domainchecker/domainproviders/dotwtf"
 
 	// Load necessary providers.
 	_ "github.com/KeizerDev/domainchecker/providers/transip"

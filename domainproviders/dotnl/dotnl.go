@@ -1,4 +1,4 @@
-package dotcom
+package dotnl
 
 import (
 	"fmt"

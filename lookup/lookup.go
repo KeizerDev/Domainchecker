@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/KeizerDev/domainchecker/domainproviders"
+	"github.com/KeizerDev/domainchecker/providers"
 	"github.com/domainr/whois"
 	"github.com/fatih/color"
 	"github.com/gosuri/uilive"
@@ -23,13 +24,15 @@ type domaincheck struct {
 }
 
 var domainscheck = []domaincheck{}
+var prvdr = ""
 
 func init() {
 }
 
 // Search builds a search URL and opens it in your browser.
-func QueryHandler(p string, domain string, verbose bool) error {
+func QueryHandler(provider string, domain string, verbose bool) error {
 	domainscheck = []domaincheck{}
+	prvdr = provider
 
 	if strings.HasSuffix(domain, ".*") {
 		domainscheck = multipleDomains(domain)
@@ -51,6 +54,9 @@ func QueryHandler(p string, domain string, verbose bool) error {
 
 func singleDomain(domain string) []domaincheck {
 	domainscheck = append(domainscheck, domaincheck{domain, 0})
+	if prvdr != "" {
+		providers.Search("", prvdr, domain, false)
+	}
 
 	return domainscheck
 }
@@ -66,7 +72,6 @@ func multipleDomains(domain string) []domaincheck {
 }
 
 func createTable(writer *uilive.Writer, domainscheck []domaincheck) {
-
 
 	white := color.New(color.FgWhite, color.Bold).SprintFunc()
 	red := color.New(color.FgRed, color.Bold).SprintFunc()

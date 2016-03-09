@@ -32,7 +32,7 @@ Flags:
 
 ## What should it do?
 It should check which domain is available and which not. 
-When the domain is available it would be ideal to pass it to a domain supplier like [godaddy](https://godaddy.com/) (this is WIP now).
+When the domain is available it will pass it to a domain supplier e.g. [godaddy](https://godaddy.com/)
 
 
 ## Install

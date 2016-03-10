@@ -15,6 +15,7 @@ import (
 
 	// Load necessary providers.
 	_ "github.com/KeizerDev/domainchecker/providers/godaddy"
+	_ "github.com/KeizerDev/domainchecker/providers/namecheap"
 	_ "github.com/KeizerDev/domainchecker/providers/transip"
 
 	"github.com/KeizerDev/domainchecker/cmd"

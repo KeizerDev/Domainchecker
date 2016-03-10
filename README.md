@@ -70,6 +70,12 @@ $ domainchecker myepicname.nl -p godaddy
 ```
 
 
+Add just the beginning of a provider and it will auto correct you.
+```
+$ domainchecker myepicname.nl -p nameche
+```
+
+
 To get a list of the suppliers just run.
 ```
 $ domainchecker -l
@@ -80,6 +86,7 @@ To add more domain extensions, build a new feature or just fix a simple typo jus
 
 #### Providers
 - godaddy
+- namecheap
 
 #### Contributors
 

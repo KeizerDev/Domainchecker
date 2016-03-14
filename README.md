@@ -85,7 +85,9 @@ $ domainchecker -l
 To add more domain extensions, build a new feature or just fix a simple typo just create a PR. I'm very happy with every contribution out there, no matter how small it is!  
 
 #### Providers
+- enom
 - godaddy
+- googledomains
 - namecheap
 
 #### Contributors

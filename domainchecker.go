@@ -14,7 +14,9 @@ import (
 	_ "github.com/KeizerDev/domainchecker/domainproviders/dotorg"
 
 	// Load necessary providers.
+	_ "github.com/KeizerDev/domainchecker/providers/enom"
 	_ "github.com/KeizerDev/domainchecker/providers/godaddy"
+	_ "github.com/KeizerDev/domainchecker/providers/googledomains"
 	_ "github.com/KeizerDev/domainchecker/providers/namecheap"
 	_ "github.com/KeizerDev/domainchecker/providers/transip"
 

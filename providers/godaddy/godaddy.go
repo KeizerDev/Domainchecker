@@ -13,6 +13,7 @@ func init() {
 
 // Provider merely implements the Provider interface.
 type Provider struct{}
+//blabla
 
 // BuildURI generates a search URL for godaddy.
 func (p *Provider) BuildURI(q string) string {
